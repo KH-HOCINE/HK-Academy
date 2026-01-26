@@ -4,12 +4,391 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ressources pédagogiques - Prof. Khendek Hocine</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'%3E%3Cg opacity='0.1' fill='%23ffffff'%3E%3Ccircle cx='200' cy='150' r='80'/%3E%3Cpath d='M400 200 L500 100 L600 200 L500 300 Z'/%3E%3Crect x='800' y='100' width='150' height='150' rx='20'/%3E%3Cpath d='M300 500 Q400 400 500 500 T700 500' stroke='white' fill='none' stroke-width='3'/%3E%3Ccircle cx='900' cy='500' r='60'/%3E%3Cpath d='M100 600 L150 550 L200 600 L150 650 Z'/%3E%3Crect x='600' y='550' width='100' height='100' transform='rotate(45 650 600)'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Floating Physics Elements */
+        .floating-element {
+            position: fixed;
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .atom {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .formula {
+            width: 100px;
+            top: 60%;
+            right: 8%;
+            animation-delay: 5s;
+        }
+
+        .molecule {
+            width: 90px;
+            bottom: 15%;
+            left: 15%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo svg {
+            width: 70px;
+            height: 70px;
+        }
+
+        .header-text h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-text .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Greeting Section */
+        .greeting {
+            background: rgba(255, 255, 255, 0.98);
+            margin: 30px auto;
+            max-width: 850px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .greeting h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .greeting p {
+            color: #555;
+            line-height: 1.9;
+            font-size: 1.15em;
+            text-align: left;
+        }
+
+        .greeting .signature {
+            margin-top: 25px;
+            font-style: italic;
+            color: #2a5298;
+            font-weight: 600;
+            text-align: right;
+            font-size: 1.1em;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 2.2em;
+            margin: 40px 0 30px;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .sections {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin: 0 auto 50px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            width: 300px;
+            padding: 35px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .card:hover::after {
+            width: 400px;
+            height: 400px;
+        }
+
+        .card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .card .icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.7em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+            color: white;
+            padding: 40px 20px;
+            margin-top: auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .footer-section p {
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            .header-text h1 {
+                font-size: 1.8em;
+            }
+
+            .greeting {
+                margin: 20px;
+                padding: 25px;
+            }
+
+            .sections {
+                gap: 20px;
+            }
+
+            .card {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .floating-element {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Floating Physics Elements -->
+    <svg class="floating-element atom" viewBox="0 0 100 100" fill="white">
+        <circle cx="50" cy="50" r="5"/>
+        <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="white" stroke-width="2"/>
+        <ellipse cx="50" cy="50" rx="15" ry="40" fill="none" stroke="white" stroke-width="2"/>
+        <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="white" stroke-width="2" transform="rotate(60 50 50)"/>
+    </svg>
+
+    <svg class="floating-element formula" viewBox="0 0 100 50" fill="white">
+        <text x="5" y="25" font-size="20" font-family="serif" font-style="italic">E=mc²</text>
+    </svg>
+
+    <svg class="floating-element molecule" viewBox="0 0 100 100" fill="white">
+        <circle cx="30" cy="30" r="12"/>
+        <circle cx="70" cy="30" r="12"/>
+        <circle cx="50" cy="65" r="12"/>
+        <line x1="30" y1="30" x2="70" y2="30" stroke="white" stroke-width="3"/>
+        <line x1="30" y1="30" x2="50" y2="65" stroke="white" stroke-width="3"/>
+        <line x1="70" y1="30" x2="50" y2="65" stroke="white" stroke-width="3"/>
+    </svg>
+
     <header>
-        <h1>📚 Espace Ressources Pédagogiques</h1>
-        <p class="subtitle">Mathématiques & Physique</p>
+        <div class="header-content">
+            <div class="logo">
+                <svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Livre -->
+                    <rect x="25" y="20" width="50" height="60" rx="3" fill="url(#grad1)"/>
+                    <rect x="30" y="20" width="40" height="60" rx="2" fill="#f8f9fa"/>
+                    <line x1="50" y1="25" x2="50" y2="75" stroke="url(#grad1)" stroke-width="2"/>
+                    <!-- Lignes de texte -->
+                    <line x1="35" y1="35" x2="45" y2="35" stroke="url(#grad1)" stroke-width="1.5"/>
+                    <line x1="35" y1="42" x2="45" y2="42" stroke="url(#grad1)" stroke-width="1.5"/>
+                    <line x1="55" y1="35" x2="65" y2="35" stroke="url(#grad1)" stroke-width="1.5"/>
+                    <line x1="55" y1="42" x2="65" y2="42" stroke="url(#grad1)" stroke-width="1.5"/>
+                    <!-- Formule mathématique -->
+                    <text x="32" y="62" font-size="10" fill="url(#grad1)" font-family="serif">π</text>
+                    <circle cx="60" cy="58" r="4" fill="none" stroke="url(#grad1)" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1>📚 Espace Ressources Pédagogiques</h1>
+                <p class="subtitle">Mathématiques & Physique</p>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -18,10 +397,11 @@
             <p>
                 Je suis heureux de vous accueillir sur cet espace dédié à votre réussite scolaire. 
                 En tant que votre professeur de mathématiques et de physique, j'ai créé ce site pour 
-                mettre à votre disposition tous les outils nécessaires à votre apprentissage 
+                mettre à votre disposition tous les outils nécessaires à votre apprentissage.
             </p>
             <p style="margin-top: 15px;">
-                
+                Vous trouverez ici des cours détaillés, des exercices corrigés et des sujets d'examens 
+                pour vous aider à progresser et à atteindre vos objectifs académiques.
             </p>
             <p class="signature">— Professeur Khendek Hocine</p>
         </div>
@@ -29,17 +409,17 @@
         <h2 class="section-title">Choisissez votre niveau</h2>
 
         <div class="sections">
-            <div class="card" onclick="openLink('https://drive.google.com/drive/folders/1ympvC_YlWa8wNA0Ey51nTfmOgqzZl-q_?usp=drive_link')">
+            <div class="card" onclick="window.open('https://drive.google.com/drive/folders/1ympvC_YlWa8wNA0Ey51nTfmOgqzZl-q_?usp=drive_link', '_blank')">
                 <div class="icon">📖</div>
                 <h2>Première AS</h2>
                 <p>Sujets, cours et exercices corrigés</p>
             </div>
-            <div class="card" onclick="openLink('https://drive.google.com/TON_LIEN_2')">
+            <div class="card" onclick="window.open('https://drive.google.com/TON_LIEN_2', '_blank')">
                 <div class="icon">📝</div>
                 <h2>Deuxième AS</h2>
                 <p>Sujets et corrigés détaillés</p>
             </div>
-            <div class="card" onclick="openLink('https://drive.google.com/TON_LIEN_3')">
+            <div class="card" onclick="window.open('https://drive.google.com/TON_LIEN_3', '_blank')">
                 <div class="icon">🎓</div>
                 <h2>Troisième AS</h2>
                 <p>Préparation aux examens</p>
@@ -66,7 +446,5 @@
             <p>&copy; 2026 Prof. Khendek Hocine - Tous droits réservés</p>
         </div>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
