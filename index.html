@@ -176,6 +176,136 @@
             z-index: 1;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            margin: 10% auto;
+            padding: 0;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideDown 0.4s ease;
+            overflow: hidden;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .close:hover {
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .subject-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .subject-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.3em;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .subject-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .subject-btn:active {
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Back button */
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             main {
@@ -197,6 +327,23 @@
 
             .floating-element {
                 display: none;
+            }
+
+            .modal-content {
+                margin: 20% auto;
+                width: 95%;
+            }
+
+            .modal-header h2 {
+                font-size: 1.4em;
+            }
+
+            .subject-buttons {
+                flex-direction: column;
+            }
+
+            .subject-btn {
+                width: 100%;
             }
         }
     </style>
@@ -227,22 +374,97 @@
         <h2 class="section-title">Choisissez votre niveau</h2>
 
         <div class="sections">
-            <div class="card" onclick="window.open('https://drive.google.com/drive/folders/1ympvC_YlWa8wNA0Ey51nTfmOgqzZl-q_?usp=drive_link', '_blank')">
+            <div class="card" onclick="openModal('1AS')">
                 <div class="icon">📖</div>
                 <h2>Première AS</h2>
                 <p>Sujets, cours et exercices corrigés</p>
             </div>
-            <div class="card" onclick="window.open('https://drive.google.com/TON_LIEN_2', '_blank')">
+            <div class="card" onclick="openModal('2AS')">
                 <div class="icon">📝</div>
                 <h2>Deuxième AS</h2>
                 <p>Sujets et corrigés détaillés</p>
             </div>
-            <div class="card" onclick="window.open('https://drive.google.com/TON_LIEN_3', '_blank')">
+            <div class="card" onclick="openModal('3AS')">
                 <div class="icon">🎓</div>
                 <h2>Troisième AS</h2>
                 <p>Préparation aux examens</p>
             </div>
         </div>
     </main>
+
+    <!-- Modal -->
+    <div id="subjectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle">Choisissez la matière</h2>
+            </div>
+            <div class="modal-body">
+                <div class="subject-buttons">
+                    <button class="subject-btn" onclick="redirectTo('physique')">
+                        <span>⚛️</span> Physique
+                    </button>
+                    <button class="subject-btn" onclick="redirectTo('math')">
+                        <span>🔢</span> Mathématiques
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = '';
+
+        // Définir les liens Google Drive pour chaque niveau et matière
+        const driveLinks = {
+            '1AS': {
+                'physique': 'https://drive.google.com/drive/folders/1ympvC_YlWa8wNA0Ey51nTfmOgqzZl-q_?usp=drive_link',
+                'math': 'https://drive.google.com/drive/folders/1lkXmcdwGZTkGLI_tknRTxgQnELBHlnm8?usp=drive_link'
+            },
+            '2AS': {
+                'physique': 'https://drive.google.com/drive/folders/1oLz1Nzzw7iMLsjpKjMKU9qCpDcxAvKxW?usp=drive_link',
+                'math': 'https://drive.google.com/VOTRE_LIEN_2AS_MATH'
+            },
+            '3AS': {
+                'physique': 'https://drive.google.com/VOTRE_LIEN_3AS_PHYSIQUE',
+                'math': 'https://drive.google.com/VOTRE_LIEN_3AS_MATH'
+            }
+        };
+
+        function openModal(level) {
+            currentLevel = level;
+            const modal = document.getElementById('subjectModal');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            let levelName = '';
+            switch(level) {
+                case '1AS': levelName = 'Première AS'; break;
+                case '2AS': levelName = 'Deuxième AS'; break;
+                case '3AS': levelName = 'Troisième AS'; break;
+            }
+            
+            modalTitle.textContent = levelName + ' - Choisissez la matière';
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('subjectModal');
+            modal.style.display = 'none';
+        }
+
+        function redirectTo(subject) {
+            const link = driveLinks[currentLevel][subject];
+            window.open(link, '_blank');
+            closeModal();
+        }
+
+        // Fermer le modal si on clique en dehors
+        window.onclick = function(event) {
+            const modal = document.getElementById('subjectModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
 </html>
